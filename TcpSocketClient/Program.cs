@@ -8,7 +8,6 @@ public class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        // Setup command-line arguments
         var hostOption = new Option<string>("--host", "Host address to connect to") { IsRequired = true };
         var portOption = new Option<int>("--port", "Port to connect to") { IsRequired = true };
 
@@ -17,16 +16,14 @@ public class Program
         rootCommand.AddOption(portOption);
 
         rootCommand.SetHandler(async (string host, int port) =>
-        {
-            // Setup simple logging
-            using var loggerFactory = LoggerFactory.Create(builder =>
+        { using var loggerFactory = LoggerFactory.Create(builder =>
             {
                 builder.AddConsole();
                 builder.SetMinimumLevel(LogLevel.Information);
             });
             var logger = loggerFactory.CreateLogger<SocketClientService>();
 
-            // Create client service
+
             var clientService = new SocketClientService(logger, host, port);
 
             try

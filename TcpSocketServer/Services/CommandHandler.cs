@@ -17,14 +17,12 @@ public class CommandHandler : ICommandHandler
     {
         try
         {
-            // Parse command
             var tokens = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (tokens.Length == 0)
             {
                 return "ERROR EmptyCommand";
             }
 
-            // Handle known commands
             return tokens[0].ToUpperInvariant() switch
             {
                 "LOGOUT" => "OK Goodbye",

@@ -16,7 +16,7 @@ public class SocketServerService : IHostedService
     private CancellationTokenSource? _cancellationTokenSource;
 
     public SocketServerService(
-        ILogger<SocketServerService> logger, 
+        ILogger<SocketServerService> logger,
         ICommandHandler commandHandler,
         IConfiguration configuration)
     {
@@ -30,12 +30,11 @@ public class SocketServerService : IHostedService
         _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         _listener = new TcpListener(IPAddress.Any, _port);
         _listener.Start();
-        
+
         _logger.LogInformation("Server started on port {Port}", _port);
-        
-        // Start accepting connections in background
+
         _ = AcceptConnectionsAsync(_cancellationTokenSource.Token);
-        
+
         return Task.CompletedTask;
     }
 
@@ -48,14 +47,12 @@ public class SocketServerService : IHostedService
                 var client = await _listener!.AcceptTcpClientAsync(cancellationToken);
                 var clientEndPoint = client.Client.RemoteEndPoint;
                 _logger.LogInformation("Client connected: {EndPoint}", clientEndPoint);
-                
-                // Handle each client in separate task
+
                 _ = HandleClientAsync(client, cancellationToken);
             }
         }
         catch (OperationCanceledException)
         {
-            // Normal shutdown, ignore
         }
         catch (Exception ex)
         {
@@ -66,7 +63,7 @@ public class SocketServerService : IHostedService
     private async Task HandleClientAsync(TcpClient client, CancellationToken cancellationToken)
     {
         var clientEndPoint = client.Client.RemoteEndPoint;
-        
+
         try
         {
             using (client)
@@ -77,10 +74,8 @@ public class SocketServerService : IHostedService
 
                 while (!cancellationToken.IsCancellationRequested && client.Connected)
                 {
-                    // Read line (command) from client
                     var command = await reader.ReadLineAsync(cancellationToken);
-                    
-                    // Client disconnected or stream closed
+
                     if (command == null)
                     {
                         _logger.LogInformation("Client disconnected: {EndPoint}", clientEndPoint);
@@ -88,12 +83,10 @@ public class SocketServerService : IHostedService
                     }
 
                     _logger.LogInformation("Received command: {Command} from {EndPoint}", command, clientEndPoint);
-                    
-                    // Process command
+
                     var response = await _commandHandler.HandleCommandAsync(command, cancellationToken);
                     await writer.WriteLineAsync(response.AsMemory(), cancellationToken);
-                    
-                    // If client requested logout, close the connection
+
                     if (command.Equals("LOGOUT", StringComparison.OrdinalIgnoreCase))
                     {
                         _logger.LogInformation("Client logged out: {EndPoint}", clientEndPoint);

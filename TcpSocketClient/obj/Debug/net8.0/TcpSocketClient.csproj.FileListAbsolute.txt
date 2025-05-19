@@ -40,3 +40,4 @@ E:\Work\TcpSocketSystem\TcpSocketClient\obj\Debug\net8.0\refint\TcpSocketClient.
 E:\Work\TcpSocketSystem\TcpSocketClient\obj\Debug\net8.0\TcpSocketClient.pdb
 E:\Work\TcpSocketSystem\TcpSocketClient\obj\Debug\net8.0\TcpSocketClient.genruntimeconfig.cache
 E:\Work\TcpSocketSystem\TcpSocketClient\obj\Debug\net8.0\ref\TcpSocketClient.dll
+E:\Work\TcpSocketSystem\TcpSocketClient\obj\Debug\net8.0\TcpSocketClient.sourcelink.json

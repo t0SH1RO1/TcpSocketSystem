@@ -22,11 +22,10 @@ public class CarApiService : ICarApiService
 
         _httpClient = new HttpClient
         {
-            Timeout = TimeSpan.FromSeconds(5) // 5 second timeout as per requirements
+            Timeout = TimeSpan.FromSeconds(5)
         };
         _httpClient.DefaultRequestHeaders.Add("X-Api-Key", _apiKey);
 
-        // Настраиваем параметры сериализации для обработки null и других проблемных значений
         _jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
@@ -39,7 +38,6 @@ public class CarApiService : ICarApiService
     {
         try
         {
-            // API-Ninjas expects a query parameter 'make' for the car brand
             var response = await _httpClient.GetAsync(
                 $"{_apiUrl}?make={Uri.EscapeDataString(brand.ToLower())}",
                 cancellationToken);
@@ -50,11 +48,9 @@ public class CarApiService : ICarApiService
                 return $"ERROR CarApiError: {response.StatusCode}";
             }
 
-            // Получаем JSON как строку для отладки
             var jsonString = await response.Content.ReadAsStringAsync(cancellationToken);
             _logger.LogDebug("API Response: {JsonResponse}", jsonString);
 
-            // Десериализуем вручную с использованием нашей конфигурации JsonSerializerOptions
             var carData = JsonSerializer.Deserialize<List<CarInfo>>(jsonString, _jsonOptions);
 
             if (carData == null || carData.Count == 0)
@@ -62,11 +58,8 @@ public class CarApiService : ICarApiService
                 return $"ERROR NoCarDataFound for brand: {brand}";
             }
 
-            // Получаем первый автомобиль для отображения
             var firstCar = carData[0];
 
-            // Форматируем ответ с доступными данными
-            // Используем условные операторы для проверки наличия данных
             var output = new List<string>
             {
                 $"CAR INFO: {firstCar.make} {firstCar.model} {firstCar.year}"
@@ -101,7 +94,6 @@ public class CarApiService : ICarApiService
         }
     }
 
-    // Класс для десериализации ответа Car API от API-Ninjas с nullable типами
     private class CarInfo
     {
         public string make { get; set; } = string.Empty;

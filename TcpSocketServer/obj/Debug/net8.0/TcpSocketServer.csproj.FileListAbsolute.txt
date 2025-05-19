@@ -45,3 +45,4 @@ E:\Work\TcpSocketSystem\TcpSocketServer\obj\Debug\net8.0\refint\TcpSocketServer.
 E:\Work\TcpSocketSystem\TcpSocketServer\obj\Debug\net8.0\TcpSocketServer.pdb
 E:\Work\TcpSocketSystem\TcpSocketServer\obj\Debug\net8.0\TcpSocketServer.genruntimeconfig.cache
 E:\Work\TcpSocketSystem\TcpSocketServer\obj\Debug\net8.0\ref\TcpSocketServer.dll
+E:\Work\TcpSocketSystem\TcpSocketServer\obj\Debug\net8.0\TcpSocketServer.sourcelink.json

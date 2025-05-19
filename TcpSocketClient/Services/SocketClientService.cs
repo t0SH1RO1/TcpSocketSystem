@@ -24,11 +24,11 @@ public class SocketClientService
     {
         _client = new TcpClient();
         await _client.ConnectAsync(_host, _port, cancellationToken);
-        
+
         var stream = _client.GetStream();
         _reader = new StreamReader(stream, Encoding.UTF8);
         _writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
-        
+
         _logger.LogInformation("Connected to server at {Host}:{Port}", _host, _port);
     }
 
@@ -39,28 +39,23 @@ public class SocketClientService
             throw new InvalidOperationException("Client not connected. Call ConnectAsync first.");
         }
 
-        // Create a task to read server responses
         var readServerTask = ReadServerResponsesAsync(output, cancellationToken);
-        
+
         _logger.LogInformation("Client ready. Enter commands (type 'LOGOUT' to disconnect):");
         output.WriteLine("Client ready. Enter commands (type 'LOGOUT' to disconnect):");
 
         try
         {
-            // Read commands from input and send to server
             string? line;
             while ((line = await input.ReadLineAsync(cancellationToken)) != null)
             {
-                // Skip empty lines
                 if (string.IsNullOrWhiteSpace(line))
                 {
                     continue;
                 }
-
-                // Send command to server
                 await _writer.WriteLineAsync(line.AsMemory(), cancellationToken);
-                
-                // If LOGOUT command, exit the loop
+
+
                 if (line.Equals("LOGOUT", StringComparison.OrdinalIgnoreCase))
                 {
                     _logger.LogInformation("Logout command sent, disconnecting...");
@@ -70,12 +65,10 @@ public class SocketClientService
         }
         finally
         {
-            // Close connection
             _client.Close();
             _logger.LogInformation("Connection closed.");
         }
 
-        // Wait for the server response reader task to complete
         await readServerTask;
     }
 
@@ -86,15 +79,13 @@ public class SocketClientService
             while (_client!.Connected && !cancellationToken.IsCancellationRequested)
             {
                 var response = await _reader!.ReadLineAsync(cancellationToken);
-                
-                // If response is null, the server closed the connection
+
                 if (response == null)
                 {
                     _logger.LogInformation("Server closed the connection.");
                     break;
                 }
-                
-                // Write response to output
+
                 await output.WriteLineAsync($"Server: {response}");
             }
         }
