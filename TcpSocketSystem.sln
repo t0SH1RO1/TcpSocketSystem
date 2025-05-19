@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpSocketServer", "TcpSocketServer\TcpSocketServer.csproj", "{9A7F6FCA-CB5A-4904-B776-53B91A0E6E16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpSocketClient", "TcpSocketClient\TcpSocketClient.csproj", "{AF4300C8-4B73-4E57-8C11-6EC7989052AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpSocketServer.Tests", "TcpSocketServer.Tests\TcpSocketServer.Tests.csproj", "{108971CC-B618-4BEC-AF0A-D916CF8D4F9F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A7F6FCA-CB5A-4904-B776-53B91A0E6E16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A7F6FCA-CB5A-4904-B776-53B91A0E6E16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A7F6FCA-CB5A-4904-B776-53B91A0E6E16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A7F6FCA-CB5A-4904-B776-53B91A0E6E16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF4300C8-4B73-4E57-8C11-6EC7989052AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF4300C8-4B73-4E57-8C11-6EC7989052AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF4300C8-4B73-4E57-8C11-6EC7989052AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF4300C8-4B73-4E57-8C11-6EC7989052AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{108971CC-B618-4BEC-AF0A-D916CF8D4F9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{108971CC-B618-4BEC-AF0A-D916CF8D4F9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{108971CC-B618-4BEC-AF0A-D916CF8D4F9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{108971CC-B618-4BEC-AF0A-D916CF8D4F9F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
