@@ -1,0 +1,58 @@
+﻿## Build results
+bin/
+obj/
+out/
+
+## User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider / VS Code / VS settings
+.idea/
+.vscode/
+*.code-workspace
+
+## Logs
+*.log
+
+## Test results
+TestResults/
+*.coverage
+*.coveragexml
+*.vspx
+*.vsp
+*.vsmdi
+
+## DotCover
+*.dcvr
+
+## Packages
+*.nupkg
+packages/
+.nuget/
+
+## Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## Docker (если используешь)
+**/docker-compose.override.yml
+**/docker-compose*.yaml
+**/Dockerfile*
+
+## Gitignore for Car API keys (лучше убрать чувствительные данные)
+appsettings.*.json
+secrets.json
+
+# Ignore local dev env config
+.env
