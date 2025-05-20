@@ -13,39 +13,45 @@ public class CommandHandler : ICommandHandler
         _carApiService = carApiService;
     }
 
-    public async Task<string> HandleCommandAsync(string command, CancellationToken cancellationToken)
+    public async Task<ResponseCommand> HandleCommandAsync(string command, CancellationToken cancellationToken)
     {
         try
         {
-            var tokens = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (tokens.Length == 0)
+            if (string.IsNullOrWhiteSpace(command))
             {
-                return "ERROR EmptyCommand";
+                return new ResponseCommand("ERROR EmptyCommand");
             }
 
-            return tokens[0].ToUpperInvariant() switch
+            command = command.Trim();
+
+            if (command.Equals("PING", StringComparison.OrdinalIgnoreCase))
             {
-                "LOGOUT" => "OK Goodbye",
-                "CAR" => await HandleCarCommandAsync(tokens.Skip(1).ToArray(), cancellationToken),
-                "PING" => "PONG",
-                _ => $"ERROR UnknownCommand"
-            };
+                return new ResponseCommand("PONG");
+            }
+
+            if (command.StartsWith("CAR ", StringComparison.OrdinalIgnoreCase))
+            {
+                var brand = command.Substring(4).Trim();
+                if (string.IsNullOrWhiteSpace(brand))
+                {
+                    return new ResponseCommand("ERROR MissingBrand");
+                }
+
+                var info = await _carApiService.GetCarInfoAsync(brand, cancellationToken);
+                return new ResponseCommand(info);
+            }
+
+            if (command.Equals("LOGOUT", StringComparison.OrdinalIgnoreCase))
+            {
+                return new ResponseCommand("OK Goodbye", isLogout: true);
+            }
+
+            return new ResponseCommand($"ERROR UnknownCommand: {command}");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error handling command: {Command}", command);
-            return "ERROR InternalError";
+            return new ResponseCommand("ERROR InternalError");
         }
-    }
-
-    private async Task<string> HandleCarCommandAsync(string[] args, CancellationToken cancellationToken)
-    {
-        if (args.Length == 0)
-        {
-            return "ERROR MissingCarParameter";
-        }
-
-        string brand = args[0];
-        return await _carApiService.GetCarInfoAsync(brand, cancellationToken);
     }
 }

@@ -28,7 +28,8 @@ public class CommandHandlerTests
         var result = await _commandHandler.HandleCommandAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal("ERROR EmptyCommand", result);
+        Assert.Equal("ERROR EmptyCommand", result.Response);
+        Assert.False(result.IsLogout);
     }
 
     [Fact]
@@ -41,11 +42,12 @@ public class CommandHandlerTests
         var result = await _commandHandler.HandleCommandAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal("ERROR UnknownCommand", result);
+        Assert.StartsWith("ERROR UnknownCommand", result.Response);
+        Assert.False(result.IsLogout);
     }
 
     [Fact]
-    public async Task HandleCommandAsync_LogoutCommand_ReturnsGoodbye()
+    public async Task HandleCommandAsync_LogoutCommand_ReturnsGoodbyeAndSetsFlag()
     {
         // Arrange
         string command = "LOGOUT";
@@ -54,7 +56,8 @@ public class CommandHandlerTests
         var result = await _commandHandler.HandleCommandAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal("OK Goodbye", result);
+        Assert.Equal("OK Goodbye", result.Response);
+        Assert.True(result.IsLogout);
     }
 
     [Fact]
@@ -67,7 +70,8 @@ public class CommandHandlerTests
         var result = await _commandHandler.HandleCommandAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal("PONG", result);
+        Assert.Equal("PONG", result.Response);
+        Assert.False(result.IsLogout);
     }
 
     [Fact]
@@ -80,7 +84,8 @@ public class CommandHandlerTests
         var result = await _commandHandler.HandleCommandAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal("ERROR MissingCarParameter", result);
+        Assert.Equal("ERROR MissingBrand", result.Response);
+        Assert.False(result.IsLogout);
     }
 
     [Fact]
@@ -89,7 +94,7 @@ public class CommandHandlerTests
         // Arrange
         string command = "CAR BMW";
         string expected = "CAR INFO: BMW - Founded: 1916, Country: Germany";
-        
+
         _carApiServiceMock
             .Setup(s => s.GetCarInfoAsync("BMW", It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);
@@ -98,27 +103,29 @@ public class CommandHandlerTests
         var result = await _commandHandler.HandleCommandAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Response);
+        Assert.False(result.IsLogout);
         _carApiServiceMock.Verify(s => s.GetCarInfoAsync("BMW", It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
-    public async Task HandleCommandAsync_CarCommandWithMultipleArgs_UseFirstArgAsBrand()
+    public async Task HandleCommandAsync_CarCommandWithMultipleArgs_UsesAllTextAfterCommandAsBrand()
     {
         // Arrange
         string command = "CAR BMW Additional Arguments";
-        string expected = "CAR INFO: BMW - Founded: 1916, Country: Germany";
-        
+        string expected = "CAR INFO: BMW Additional Arguments - Founded: 1916, Country: Germany";
+
         _carApiServiceMock
-            .Setup(s => s.GetCarInfoAsync("BMW", It.IsAny<CancellationToken>()))
+            .Setup(s => s.GetCarInfoAsync("BMW Additional Arguments", It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);
 
         // Act
         var result = await _commandHandler.HandleCommandAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal(expected, result);
-        _carApiServiceMock.Verify(s => s.GetCarInfoAsync("BMW", It.IsAny<CancellationToken>()), Times.Once);
+        Assert.Equal(expected, result.Response);
+        Assert.False(result.IsLogout);
+        _carApiServiceMock.Verify(s => s.GetCarInfoAsync("BMW Additional Arguments", It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -127,7 +134,7 @@ public class CommandHandlerTests
         // Arrange
         string command = "car BMW";
         string expected = "CAR INFO: BMW - Founded: 1916, Country: Germany";
-        
+
         _carApiServiceMock
             .Setup(s => s.GetCarInfoAsync("BMW", It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);
@@ -136,7 +143,8 @@ public class CommandHandlerTests
         var result = await _commandHandler.HandleCommandAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Response);
+        Assert.False(result.IsLogout);
     }
 
     [Fact]
@@ -145,7 +153,7 @@ public class CommandHandlerTests
         // Arrange
         string command = "  CAR   BMW  ";
         string expected = "CAR INFO: BMW - Founded: 1916, Country: Germany";
-        
+
         _carApiServiceMock
             .Setup(s => s.GetCarInfoAsync("BMW", It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);
@@ -154,7 +162,8 @@ public class CommandHandlerTests
         var result = await _commandHandler.HandleCommandAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Response);
+        Assert.False(result.IsLogout);
     }
 
     [Fact]
@@ -162,7 +171,7 @@ public class CommandHandlerTests
     {
         // Arrange
         string command = "CAR BMW";
-        
+
         _carApiServiceMock
             .Setup(s => s.GetCarInfoAsync("BMW", It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Test exception"));
@@ -171,6 +180,7 @@ public class CommandHandlerTests
         var result = await _commandHandler.HandleCommandAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal("ERROR InternalError", result);
+        Assert.Equal("ERROR InternalError", result.Response);
+        Assert.False(result.IsLogout);
     }
 }

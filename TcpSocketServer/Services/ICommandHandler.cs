@@ -2,5 +2,6 @@
 
 public interface ICommandHandler
 {
-    Task<string> HandleCommandAsync(string command, CancellationToken cancellationToken);
+    Task<ResponseCommand> HandleCommandAsync(string command, CancellationToken cancellationToken);
+
 }
