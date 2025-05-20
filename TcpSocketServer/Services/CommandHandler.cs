@@ -29,15 +29,16 @@ public class CommandHandler : ICommandHandler
                 return new ResponseCommand("PONG");
             }
 
-            if (command.StartsWith("CAR ", StringComparison.OrdinalIgnoreCase))
+            if (command.StartsWith("CAR", StringComparison.OrdinalIgnoreCase))
             {
-                var brand = command.Substring(4).Trim();
-                if (string.IsNullOrWhiteSpace(brand))
+                var brandPart = command.Length > 3 ? command.Substring(3).Trim() : string.Empty;
+
+                if (string.IsNullOrWhiteSpace(brandPart))
                 {
                     return new ResponseCommand("ERROR MissingBrand");
                 }
 
-                var info = await _carApiService.GetCarInfoAsync(brand, cancellationToken);
+                var info = await _carApiService.GetCarInfoAsync(brandPart, cancellationToken);
                 return new ResponseCommand(info);
             }
 

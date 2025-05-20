@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TcpSocketClient")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+490d6dc23b5326dddb6e5fae32566278e78effb5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+818a185a7412424a23321159c8daa0503dff52ec")]
 [assembly: System.Reflection.AssemblyProductAttribute("TcpSocketClient")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TcpSocketClient")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

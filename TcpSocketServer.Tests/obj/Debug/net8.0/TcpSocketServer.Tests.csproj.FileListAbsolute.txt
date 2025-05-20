@@ -136,3 +136,4 @@ E:\Work\TcpSocketSystem\TcpSocketServer.Tests\obj\Debug\net8.0\refint\TcpSocketS
 E:\Work\TcpSocketSystem\TcpSocketServer.Tests\obj\Debug\net8.0\TcpSocketServer.Tests.pdb
 E:\Work\TcpSocketSystem\TcpSocketServer.Tests\obj\Debug\net8.0\TcpSocketServer.Tests.genruntimeconfig.cache
 E:\Work\TcpSocketSystem\TcpSocketServer.Tests\obj\Debug\net8.0\ref\TcpSocketServer.Tests.dll
+E:\Work\TcpSocketSystem\TcpSocketServer.Tests\obj\Debug\net8.0\TcpSocketServer.Tests.sourcelink.json
